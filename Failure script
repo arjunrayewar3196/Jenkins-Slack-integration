@@ -1,0 +1,22 @@
+//Jenkins slack failure script
+pipeline {
+  agent any
+
+  stages {
+    stage('Build') {
+      steps {
+        ehco "First Build step"
+      }
+    }
+  }
+
+  post {
+    failure {
+      slackSend (
+        channel: '#jenkins-slack-github',
+        color: 'danger',
+        message: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER}' failed!"
+      )
+    }
+  }
+}
